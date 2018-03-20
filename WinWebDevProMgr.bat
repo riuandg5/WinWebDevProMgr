@@ -16,6 +16,8 @@ cls
 rem ==================================================
 rem default path for all projects
 rem ==================================================
+cd /d %userprofile%/Desktop
+if not exist backend md backend
 cd /d %userprofile%/Desktop/backend
 
 call :colorEcho 0b "======================================================="
