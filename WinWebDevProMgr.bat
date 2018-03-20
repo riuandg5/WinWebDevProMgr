@@ -3,6 +3,10 @@ rem console view settings
 rem ==================================================
 @echo off
 setlocal enabledelayedexpansion
+rem echo in different colours
+for /F "tokens=1,2 delims=#" %%a in ('"prompt #$H#$E# & echo on & for %%b in (1) do     rem"') do (
+  set "DEL=%%a"
+)
 title ProjectSetup
 mode con: cols=75 lines=30
 color 0a
@@ -13,9 +17,12 @@ rem ==================================================
 rem default path for all projects
 rem ==================================================
 cd /d %userprofile%/Desktop/backend
-echo =======================================================
+
+call :colorEcho 0b "======================================================="
+echo.
 echo WINDOWS WEB DEVELOPMENT PROJECT MANAGER BY REU
-echo =======================================================
+call :colorEcho 0b "======================================================="
+echo.
 echo New Project               :      -new
 echo.
 echo Run Project               :      -run projectName
@@ -25,7 +32,8 @@ echo.
 echo Leave Command Prompt      :      -return
 echo.
 echo To Exit                   :      -exit
-echo =======================================================
+call :colorEcho 0b "======================================================="
+echo.
 echo.
 set /p input=!userName! 
 echo !input!|findstr /i /x "^-new" >nul && goto :newProject
@@ -54,9 +62,11 @@ cls
 rem ==================================================
 rem project name
 rem ==================================================
-echo =======================================================
+call :colorEcho 0b "======================================================="
+echo.
 set /p projectName=Project Name - 
-echo =======================================================
+call :colorEcho 0b "======================================================="
+echo.
 md !projectName: =!
 cd !projectName: =!
 echo.
@@ -64,9 +74,11 @@ echo.
 rem ==================================================
 rem create package.json file for project
 rem ==================================================
-echo =======================================================
+call :colorEcho 0b "======================================================="
+echo.
 echo Initialising package.json configuration...
-echo =======================================================
+call :colorEcho 0b "======================================================="
+echo.
 echo.
 call npm init
 echo.
@@ -74,9 +86,11 @@ echo.
 rem ==================================================
 rem create MVC Structure for project
 rem ==================================================
-echo =======================================================
+call :colorEcho 0b "======================================================="
+echo.
 echo Making Model View Controller Structure...
-echo =======================================================
+call :colorEcho 0b "======================================================="
+echo.
 echo.
 mkdir app && cd app
 mkdir controllers models routes views
@@ -95,18 +109,22 @@ echo.
 rem ==================================================
 rem install node modules
 rem ==================================================
-echo =======================================================
+call :colorEcho 0b "======================================================="
+echo.
 echo EXPRESS, EJS and REQUEST will be  installed by default.
 echo.
 set /p packages=Name other packages you want to install - 
-echo =======================================================
+call :colorEcho 0b "======================================================="
+echo.
 echo.
 call npm install --save express ejs request !packages!
 echo.
 
-echo =======================================================
+call :colorEcho 0b "======================================================="
+echo.
 echo Writing commonly used files...
-echo =======================================================
+call :colorEcho 0b "======================================================="
+echo.
 echo.
 
 rem app/controllers/index.server.controller.js
@@ -251,8 +269,19 @@ rem =========
 echo Configured server setings..
 echo.
 
-echo =======================================================
+call :colorEcho 0b "======================================================="
+echo.
 echo Your project is ready!
-echo =======================================================
+call :colorEcho 0b "======================================================="
+echo.
 pause>nul
 goto :main
+
+rem ==================================================
+rem function to echo in different colors
+rem ==================================================
+:colorEcho
+echo off
+<nul set /p ".=%DEL%" > "%~2"
+findstr /v /a:%1 /R "^$" "%~2" nul
+del "%~2" > nul 2>&1i
