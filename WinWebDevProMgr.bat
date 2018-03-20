@@ -16,32 +16,35 @@ cd /d %userprofile%/Desktop/backend
 echo =======================================================
 echo WINDOWS WEB DEVELOPMENT PROJECT MANAGER BY REU
 echo =======================================================
-echo New Project             :    -new
+echo New Project               :      -new
 echo.
-echo Run Project             :    -run -projectName
+echo Run Project               :      -run projectName
 echo.
-echo NPM and NODE Command    :    npmORnode commands
+echo Command Prompt            :      -cmd
 echo.
-echo To Exit                 :    -exit
+echo Leave Command Prompt      :      -return
+echo.
+echo To Exit                   :      -exit
 echo =======================================================
 echo.
 set /p input=!userName! 
 echo !input!|findstr /i /x "^-new" >nul && goto :newProject
 echo !input!|findstr /i "^-run" >nul && goto :runApp
-echo !input!|findstr /i "npm" >nul && goto :npmCommand
+echo !input!|findstr /i /x "^-cmd" >nul && (echo. && goto :cmdPrompt)
 echo !input!|findstr /i /x "^-exit" >nul && exit
 echo.
 goto :main
 
-:npmCommand
-echo.
+:cmdPrompt
+set /p input=!cd!^>
+echo !input!|findstr /i /x "^-return" >nul && goto :main
 call !input!
-pause>nul
-goto main
+echo.
+goto :cmdPrompt
 
 :runApp
 echo.
-cd !input:~6!
+cd !input:~5!
 call node server.js
 echo.
 goto :main
