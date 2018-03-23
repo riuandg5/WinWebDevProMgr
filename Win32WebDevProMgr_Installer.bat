@@ -7,7 +7,7 @@ rem echo in different colours
 for /F "tokens=1,2 delims=#" %%a in ('"prompt #$H#$E# & echo on & for %%b in (1) do     rem"') do (
   set "DEL=%%a"
 )
-title ProjectSetup
+title Windows 32bit Web Development Project Manager
 mode con: cols=100 lines=30
 color 0a
 
