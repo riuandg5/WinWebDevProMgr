@@ -17,13 +17,16 @@ _Windows 32bit Web Development Project Manager_
 - Installation is complete! After the restart workspace named **WebProjects** will be there on your desktop.
 
 ## Main Program
-- Open the workspace (**WebProjects**) and run **Win32WebDevProMgr.bat** and use it make your app.
+- Open the workspace (**WebProjects**) and run **Win32WebDevProMgr.bat** and use it to make your app.
 
 ## Commands
 - **`-new`** : To create a new project.
-- **`-run projectName`** : To run a project.
+- **`-run appName`** : To run an app.
+- **`-appd appName`** : To go in an app's directory.
+- **`-node nodeCommand`** : To run node command after -appd command
+- **`-npm npmCommand`** : To run npm command after -appd command
 - **`-mongod`** : To run MongoDB.
 - **`-mongo`** : To run MongoDB shell.
 - **`-cmd`** : To enter Command Prompt.
-- **`-return`** : To leave Command Prompt and return to main program.
+- **`-return`** : To leave Command Prompt and App's Directory.
 - **`-exit`** : To close the main program.
