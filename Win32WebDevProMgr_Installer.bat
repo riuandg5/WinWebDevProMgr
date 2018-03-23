@@ -8,26 +8,142 @@ for /F "tokens=1,2 delims=#" %%a in ('"prompt #$H#$E# & echo on & for %%b in (1)
   set "DEL=%%a"
 )
 title ProjectSetup
-mode con: cols=75 lines=30
+mode con: cols=100 lines=30
 color 0a
 
+rem ==================================================
+rem delete intalled hotfix KB2731284
+rem ==================================================
+if exist HotfixKB2731284.msu del HotfixKB2731284.msu
+
+rem ==================================================
+rem check if installation is needed
+rem ==================================================
+if exist %userprofile%\Desktop\WebProject\Win32WebDevProMgr.bat (
+	goto :installed
+) else (
+	rem ==================================================
+	rem create workspace WebProject
+	rem ==================================================
+	md WebProject
+	cd WebProject
+
+	rem ==================================================
+	rem 7za console version for unzipping files
+	rem ==================================================
+	:download7za
+	cls
+	call :colorEcho 0b "======================================================="
+	echo.
+	echo Downloading 7za.exe
+	call :colorEcho 0b "======================================================="
+	echo.
+	echo.
+	powershell "Import-Module BitsTransfer; Start-BitsTransfer 'https://raw.githubusercontent.com/riuandg5/Win32WebDevProMgr/master/7za.exe' '7za.exe'"
+	if not exist 7za.exe goto :download7za
+
+	rem ==================================================
+	rem download node.zip
+	rem ==================================================
+	:downloadNode
+	cls
+	call :colorEcho 0b "======================================================="
+	echo.
+	echo Downloading Node.js
+	call :colorEcho 0b "======================================================="
+	echo.
+	echo.
+	powershell "Import-Module BitsTransfer; Start-BitsTransfer 'https://nodejs.org/dist/v8.10.0/node-v8.10.0-win-x86.zip' 'node.zip'"
+	if not exist node.zip goto :downloadNode
+
+	rem ==================================================
+	rem unzip node.zip files in folder Node
+	rem ==================================================
+	7za x "node.zip" -y
+	for /d %%j in ("..\WebProject\*") do ren %%~fj Node
+
+	rem ==================================================
+	rem download mongodb.zip
+	rem ==================================================
+	:downloadMongodb
+	cls
+	call :colorEcho 0b "======================================================="
+	echo.
+	echo Downloading MongoDB
+	call :colorEcho 0b "======================================================="
+	echo.
+	echo.
+	powershell "Import-Module BitsTransfer; Start-BitsTransfer 'http://downloads.mongodb.org/win32/mongodb-win32-i386-v3.2-latest.zip?_ga=2.180807143.1560326467.1521557070-682270368.1521359003' 'mongodb.zip'"
+	if not exist mongodb.zip goto :downloadMongodb
+	
+	rem ==================================================
+	rem unzip mongodb.zip files in folder MongoDB\mongodb
+	rem ==================================================
+	7za x "mongodb.zip" -o"MongoDB" -y
+	for /d %%j in ("MongoDB\*") do ren %%~fj mongodb
+	
+	rem ==================================================
+	rem create MongoDB\data\db for data storage
+	rem create workspace for all WebApps
+	rem ==================================================
+	md MongoDB\data\db WebApps
+
+	rem ==================================================
+	rem delete zip files and 7za
+	rem ==================================================
+	del node.zip
+	del mongodb.zip
+	del 7za.exe
+
+	rem ==================================================
+	rem download and install hotfix KB2731284
+	rem ==================================================
+	:downloadHotfix
+	cls
+	call :colorEcho 0b "======================================================="
+	echo.
+	echo Downloading And Installing Hotfix KB2731284
+	call :colorEcho 0b "======================================================="
+	echo.
+	echo.
+	powershell "Import-Module BitsTransfer; Start-BitsTransfer 'https://raw.githubusercontent.com/riuandg5/Win32WebDevProMgr/master/Windows6.1-KB2731284-v3-x86.msu' 'HotfixKB2731284.msu'"
+	if not exist HotfixKB2731284.msu goto :downloadHotfix
+	rem HotfixKB2731284.msu
+
+	rem ==================================================
+	rem convert installer to app and move to WebProject
+	rem delete installer
+	rem ==================================================
+	copy ..\Win32WebDevProMgr_Installer.bat
+	ren Win32WebDevProMgr_Installer.bat Win32WebDevProMgr.bat
+	del ..\Win32WebDevProMgr_Installer.bat
+
+	exit
+)
+:installed
 :main
 cls
 rem ==================================================
 rem default path for all projects
 rem ==================================================
-cd /d %userprofile%/Desktop
-if not exist backend md backend
-cd /d %userprofile%/Desktop/backend
+set webProPath=%userprofile%\Desktop\WebProject
+set nodePath=%userprofile%\Desktop\WebProject\Node
+set mongoPath=%userprofile%\Desktop\WebProject\MongoDB
+set appPath=%userprofile%\Desktop\WebProject\WebApps
+cd /d !webProPath!
 
 call :colorEcho 0b "======================================================="
 echo.
-echo WINDOWS WEB DEVELOPMENT PROJECT MANAGER BY REU
+echo WINDOWS 32bit WEB DEVELOPMENT PROJECT MANAGER BY REU
 call :colorEcho 0b "======================================================="
 echo.
 echo New Project               :      -new
 echo.
 echo Run Project               :      -run projectName
+echo.
+echo Run MongoDB               :      -mongod
+echo.
+echo Run MongoDB Shell         :      -mongo
 echo.
 echo Command Prompt            :      -cmd
 echo.
@@ -40,6 +156,8 @@ echo.
 set /p input=!userName! 
 echo !input!|findstr /i /x "^-new" >nul && goto :newProject
 echo !input!|findstr /i "^-run" >nul && goto :runApp
+echo !input!|findstr /i /x "^-mongod" >nul && goto :runMongod
+echo !input!|findstr /i /x "^-mongo" >nul && goto :runMongo
 echo !input!|findstr /i /x "^-cmd" >nul && (echo. && goto :cmdPrompt)
 echo !input!|findstr /i /x "^-exit" >nul && exit
 echo.
@@ -54,8 +172,17 @@ goto :cmdPrompt
 
 :runApp
 echo.
-cd !input:~5!
-call node server.js
+cd !appPath!\!input:~5!
+call !nodePath!\node server.js
+echo.
+goto :main
+
+:runMongod
+start !mongoPath!\mongodb\bin\mongod.exe --dbpath "!mongoPath!\data\db" --journal  --storageEngine=mmapv1
+
+:runMongo
+echo.
+call !mongoPath!\mongodb\bin\mongo.exe
 echo.
 goto :main
 
@@ -69,8 +196,8 @@ echo.
 set /p projectName=Project Name - 
 call :colorEcho 0b "======================================================="
 echo.
-md !projectName: =!
-cd !projectName: =!
+md !appPath!\!projectName: =!
+cd !appPath!\!projectName: =!
 echo.
 
 rem ==================================================
@@ -82,7 +209,7 @@ echo Initialising package.json configuration...
 call :colorEcho 0b "======================================================="
 echo.
 echo.
-call npm init
+call !nodePath!\npm init
 echo.
 
 rem ==================================================
@@ -94,16 +221,16 @@ echo Making Model View Controller Structure...
 call :colorEcho 0b "======================================================="
 echo.
 echo.
-mkdir app && cd app
-mkdir controllers models routes views
+md app && cd app
+md controllers models routes views
 cd views
-mkdir partials
+md partials
 cd ../..
-mkdir config && cd config
-mkdir env
+md config && cd config
+md env
 cd ..
-mkdir public && cd public
-mkdir css img js
+md public && cd public
+md css img js
 cd ..
 tree
 echo.
@@ -119,7 +246,7 @@ set /p packages=Name other packages you want to install -
 call :colorEcho 0b "======================================================="
 echo.
 echo.
-call npm install --save express ejs request !packages!
+call !nodePath!\npm install --save express ejs request !packages!
 echo.
 
 call :colorEcho 0b "======================================================="
