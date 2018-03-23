@@ -139,7 +139,9 @@ call :colorEcho 0b "======================================================="
 echo.
 echo New Project               :      -new
 echo.
-echo Run Project               :      -run projectName
+echo Run App                   :      -run appName
+echo.
+echo Go to App Directory       :      -appd appName
 echo.
 echo Run MongoDB               :      -mongod
 echo.
@@ -147,7 +149,7 @@ echo Run MongoDB Shell         :      -mongo
 echo.
 echo Command Prompt            :      -cmd
 echo.
-echo Leave Command Prompt      :      -return
+echo Leave CMD and App Dir     :      -return
 echo.
 echo To Exit                   :      -exit
 call :colorEcho 0b "======================================================="
@@ -156,6 +158,7 @@ echo.
 set /p input=!userName! 
 echo !input!|findstr /i /x "^-new" >nul && goto :newProject
 echo !input!|findstr /i "^-run" >nul && goto :runApp
+echo !input!|findstr /i "^-appd" >nul && goto :appDirectory
 echo !input!|findstr /i /x "^-mongod" >nul && goto :runMongod
 echo !input!|findstr /i /x "^-mongo" >nul && goto :runMongo
 echo !input!|findstr /i /x "^-cmd" >nul && (echo. && goto :cmdPrompt)
@@ -164,9 +167,9 @@ echo.
 goto :main
 
 :cmdPrompt
-set /p input=!cd!^>
-echo !input!|findstr /i /x "^-return" >nul && goto :main
-call !input!
+set /p cmdInput=!cd!^>
+echo !cmdInput!|findstr /i /x "^-return" >nul && goto :main
+call !cmdInput!
 echo.
 goto :cmdPrompt
 
@@ -176,6 +179,25 @@ cd !appPath!\!input:~5!
 call !nodePath!\node server.js
 echo.
 goto :main
+
+:appDirectory
+cd !appPath!\!input:~6!
+echo.
+set /p appInput=!cd!^>
+echo !appInput!|findstr /i "^-node" >nul && goto :nodeCommand
+echo !appInput!|findstr /i "^-npm" >nul && goto :npmCommand
+echo !appInput!|findstr /i /x "^-return" >nul && goto :main
+goto :appDirectory
+
+:nodeCommand
+echo.
+call !nodePath!\node !appInput:~6!
+goto :appDirectory
+
+:npmCommand
+echo.
+call !nodePath!\npm !appInput:~5!
+goto :appDirectory
 
 :runMongod
 start !mongoPath!\mongodb\bin\mongod.exe --dbpath "!mongoPath!\data\db" --journal  --storageEngine=mmapv1
