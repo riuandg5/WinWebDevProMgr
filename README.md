@@ -30,3 +30,5 @@ _Windows Web Development Project Manager_
 - **`-cmd`** : To enter Command Prompt.
 - **`-return`** : To leave Command Prompt and App's Directory.
 - **`-exit`** : To close the main program.
+
+_Windows 7 my first love_ <3 :)
