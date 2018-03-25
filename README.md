@@ -1,6 +1,6 @@
-# Win32WebDevProMgr
-_Windows 32bit Web Development Project Manager_
-- Installs the **MEN (MongoDB | Express | Node.js) stack** on Windows 32bit machine.
+# WinWebDevProMgr
+_Windows Web Development Project Manager_
+- Installs the **MEN (MongoDB | Express | Node.js) stack** on Windows machine.
 - Creates single workspace for all web applications.
 - Creates **MVC** (Media Controller View) Structure for web applications.
 - Create every new web application with a ready to deploy hello world tempalte.
@@ -9,7 +9,7 @@ _Windows 32bit Web Development Project Manager_
 - Convert itself from Installer Program to Main Program.
 
 ## Installation
-- Copy the code from [here](Win32WebDevProMgr_Installer.bat) and save it as **`Win32WebDevProMgr_Installer.bat`** on your desktop.
+- Copy the code from here ([32bit](Win32WebDevProMgr_Installer.bat) or [64bit](Win64WebDevProMgr_Installer.bat)) and save it as **`Win32WebDevProMgr_Installer.bat for 32bit or Win64WebDevProMgr_Installer.bat for 64bit`** on your **desktop**.
 - **Note : File name should be exact as given above and file should be saved on desktop only. Later I will make it operable from anywhere.**
 - Now run the file and wait while it prepares the whole setup for first time only.
 - **Note : Installation process requires internet connection. Installation time depends upon your internet speed so have patience.**
@@ -17,7 +17,7 @@ _Windows 32bit Web Development Project Manager_
 - Installation is complete! After the restart workspace named **WebProjects** will be there on your desktop.
 
 ## Main Program
-- Open the workspace (**WebProjects**) and run **Win32WebDevProMgr.bat** and use it to make your app.
+- Open the workspace (**WebProjects**) and run **Win32WebDevProMgr.bat or Win64WebDevProMgr.bat** and use it to make your app.
 
 ## Commands
 - **`-new`** : To create a new project.
