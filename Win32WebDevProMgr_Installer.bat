@@ -39,7 +39,7 @@ if exist %userprofile%\Desktop\WebProject\Win32WebDevProMgr.bat (
 	call :colorEcho 0b "======================================================="
 	echo.
 	echo.
-	powershell "Import-Module BitsTransfer; Start-BitsTransfer 'https://raw.githubusercontent.com/riuandg5/Win32WebDevProMgr/master/7za.exe' '7za.exe'"
+	powershell "Import-Module BitsTransfer; Start-BitsTransfer 'https://raw.githubusercontent.com/riuandg5/WinWebDevProMgr/master/7za32.exe' '7za.exe'"
 	if not exist 7za.exe goto :download7za
 
 	rem ==================================================
@@ -106,9 +106,9 @@ if exist %userprofile%\Desktop\WebProject\Win32WebDevProMgr.bat (
 	call :colorEcho 0b "======================================================="
 	echo.
 	echo.
-	powershell "Import-Module BitsTransfer; Start-BitsTransfer 'https://raw.githubusercontent.com/riuandg5/Win32WebDevProMgr/master/Windows6.1-KB2731284-v3-x86.msu' 'HotfixKB2731284.msu'"
+	powershell "Import-Module BitsTransfer; Start-BitsTransfer 'https://raw.githubusercontent.com/riuandg5/WinWebDevProMgr/master/Windows6.1-KB2731284-v3-x86.msu' 'HotfixKB2731284.msu'"
 	if not exist HotfixKB2731284.msu goto :downloadHotfix
-	start HotfixKB2731284.msu
+	rem HotfixKB2731284.msu
 
 	rem ==================================================
 	rem convert installer to app and move to WebProject
