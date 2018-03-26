@@ -201,6 +201,7 @@ goto :appDirectory
 
 :runMongod
 start !mongoPath!\mongodb\bin\mongod.exe --dbpath "!mongoPath!\data\db" --journal  --storageEngine=mmapv1
+goto :main
 
 :runMongo
 echo.
