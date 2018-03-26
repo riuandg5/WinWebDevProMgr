@@ -73,7 +73,7 @@ if exist %userprofile%\Desktop\WebProject\Win64WebDevProMgr.bat (
 	call :colorEcho 0b "======================================================="
 	echo.
 	echo.
-	powershell "Import-Module BitsTransfer; Start-BitsTransfer 'http://downloads.mongodb.org/win32/mongodb-win32-x86_64-2008plus-ssl-debugsymbols-v3.4-latest.zip?_ga=2.130941832.68620789.1522006620-682270368.1521359003' 'mongodb.zip'"
+	powershell "Import-Module BitsTransfer; Start-BitsTransfer 'http://downloads.mongodb.org/win32/mongodb-win32-x86_64-2008plus-ssl-v3.2-latest.zip?_ga=2.208667602.1988013442.1522070652-1374276939.1522070652' 'mongodb.zip'"
 	if not exist mongodb.zip goto :downloadMongodb
 	
 	rem ==================================================
