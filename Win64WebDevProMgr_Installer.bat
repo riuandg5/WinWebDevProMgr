@@ -186,6 +186,7 @@ echo.
 set /p appInput=!cd!^>
 echo !appInput!|findstr /i "^-node" >nul && goto :nodeCommand
 echo !appInput!|findstr /i "^-npm" >nul && goto :npmCommand
+echo !appInput!|findstr /i "^-openode" >nul && goto :openodeCommand
 echo !appInput!|findstr /i /x "^-return" >nul && goto :main
 goto :appDirectory
 
@@ -197,6 +198,11 @@ goto :appDirectory
 :npmCommand
 echo.
 call !nodePath!\npm !appInput:~5!
+goto :appDirectory
+
+:openodeCommand
+echo.
+call !nodePath!\openode !appInput:~9!
 goto :appDirectory
 
 :runMongod
