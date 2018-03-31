@@ -134,7 +134,7 @@ cd /d !webProPath!
 
 call :colorEcho 0b "======================================================="
 echo.
-echo WINDOWS 32bit WEB DEVELOPMENT PROJECT MANAGER BY REU
+echo WINDOWS 64bit WEB DEVELOPMENT PROJECT MANAGER BY REU
 call :colorEcho 0b "======================================================="
 echo.
 echo New Project               :      -new
