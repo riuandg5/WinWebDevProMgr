@@ -186,6 +186,7 @@ echo.
 set /p appInput=!cd!^>
 echo !appInput!|findstr /i "^-node" >nul && goto :nodeCommand
 echo !appInput!|findstr /i "^-npm" >nul && goto :npmCommand
+echo !appInput!|findstr /i "^-openode" >nul && goto :openodeCommand
 echo !appInput!|findstr /i /x "^-return" >nul && goto :main
 goto :appDirectory
 
@@ -197,6 +198,11 @@ goto :appDirectory
 :npmCommand
 echo.
 call !nodePath!\npm !appInput:~5!
+goto :appDirectory
+
+:openodeCommand
+echo.
+call !nodePath!\openode !appInput:~9!
 goto :appDirectory
 
 :runMongod
@@ -263,13 +269,11 @@ rem install node modules
 rem ==================================================
 call :colorEcho 0b "======================================================="
 echo.
-echo EXPRESS, EJS and REQUEST will be  installed by default.
-echo.
-set /p packages=Name other packages you want to install - 
+set /p packages=Name packages you want to install - 
 call :colorEcho 0b "======================================================="
 echo.
 echo.
-call !nodePath!\npm install --save express ejs request !packages!
+call !nodePath!\npm install --save !packages!
 echo.
 
 call :colorEcho 0b "======================================================="
