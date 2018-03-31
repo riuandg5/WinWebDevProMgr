@@ -25,6 +25,10 @@ _Windows Web Development Project Manager_
 - **`-appd appName`** : To go in an app's directory.
 - **`-node nodeCommand`** : To run node command after -appd command
 - **`-npm npmCommand`** : To run npm command after -appd command
+- **`-openode npmCommand`** : To run openode command after -appd command
+     - Install openode before using this.
+     - To install openode globally first run **`-appd`** then **`-npm install -g openode`**.
+     - You can enter your app's directory by **`-appd appName`** and then can deploy it to openonde server by **`-openode deploy`**.
 - **`-mongod`** : To run MongoDB.
 - **`-mongo`** : To run MongoDB shell.
 - **`-cmd`** : To enter Command Prompt.
