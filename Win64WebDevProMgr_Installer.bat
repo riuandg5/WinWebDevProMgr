@@ -269,13 +269,11 @@ rem install node modules
 rem ==================================================
 call :colorEcho 0b "======================================================="
 echo.
-echo EXPRESS, EJS and REQUEST will be  installed by default.
-echo.
-set /p packages=Name other packages you want to install - 
+set /p packages=Name packages you want to install - 
 call :colorEcho 0b "======================================================="
 echo.
 echo.
-call !nodePath!\npm install --save express ejs request !packages!
+call !nodePath!\npm install --save !packages!
 echo.
 
 call :colorEcho 0b "======================================================="
